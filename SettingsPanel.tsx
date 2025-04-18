@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '../ui/Button';
+import Button from '/pages/src_components_ui_Button.tsx';
 
 const SettingsPanel = () => {
   const [mode, setMode] = useState('standard');
