@@ -1,455 +1,135 @@
+// src/app/api/samples/route.ts
+
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
+// Sample text types
+const sampleTexts = {
+  academic: {
+    short: `The correlation between socioeconomic status and educational outcomes has been extensively studied in recent decades. Research indicates that students from higher-income backgrounds typically have access to more educational resources, resulting in better academic performance on average. However, this relationship is not deterministic, as numerous other factors including parental involvement, school quality, and individual motivation also play significant roles in educational achievement.`,
+    
+    medium: `The correlation between socioeconomic status and educational outcomes has been extensively studied in recent decades. Research indicates that students from higher-income backgrounds typically have access to more educational resources, resulting in better academic performance on average. However, this relationship is not deterministic, as numerous other factors including parental involvement, school quality, and individual motivation also play significant roles in educational achievement.
+
+    Multiple longitudinal studies have demonstrated that early childhood interventions can significantly mitigate the effects of socioeconomic disadvantage on educational outcomes. Programs that provide comprehensive support services, including high-quality preschool education, healthcare, and family support, have shown promising results in narrowing achievement gaps. The Perry Preschool Project and the Abecedarian Project, two well-known early intervention programs, have documented substantial long-term benefits for participants, including higher high school graduation rates, higher earnings, and lower rates of criminal activity.
+
+    Furthermore, recent research in educational psychology has highlighted the importance of non-cognitive skills, such as perseverance, self-regulation, and growth mindset, in academic success. These skills appear to be particularly valuable for students facing socioeconomic challenges, as they can help individuals navigate obstacles and persist through difficulties. Educational institutions are increasingly incorporating explicit instruction in these skills into their curricula, recognizing their importance alongside traditional academic content.`,
+    
+    long: `The correlation between socioeconomic status and educational outcomes has been extensively studied in recent decades. Research indicates that students from higher-income backgrounds typically have access to more educational resources, resulting in better academic performance on average. However, this relationship is not deterministic, as numerous other factors including parental involvement, school quality, and individual motivation also play significant roles in educational achievement.
+
+    Multiple longitudinal studies have demonstrated that early childhood interventions can significantly mitigate the effects of socioeconomic disadvantage on educational outcomes. Programs that provide comprehensive support services, including high-quality preschool education, healthcare, and family support, have shown promising results in narrowing achievement gaps. The Perry Preschool Project and the Abecedarian Project, two well-known early intervention programs, have documented substantial long-term benefits for participants, including higher high school graduation rates, higher earnings, and lower rates of criminal activity.
+
+    Furthermore, recent research in educational psychology has highlighted the importance of non-cognitive skills, such as perseverance, self-regulation, and growth mindset, in academic success. These skills appear to be particularly valuable for students facing socioeconomic challenges, as they can help individuals navigate obstacles and persist through difficulties. Educational institutions are increasingly incorporating explicit instruction in these skills into their curricula, recognizing their importance alongside traditional academic content.
+
+    The digital divide represents another dimension of educational inequality related to socioeconomic status. Access to technology and high-speed internet has become increasingly essential for educational success, particularly in light of the shift toward online and hybrid learning models. Students without reliable access to these resources face significant disadvantages in completing homework assignments, conducting research, and participating in virtual learning environments. Policy initiatives aimed at expanding broadband access and providing devices to underserved communities seek to address this aspect of educational inequality.
+
+    Teacher quality and retention also vary significantly across schools serving different socioeconomic populations. High-poverty schools often struggle to attract and retain experienced teachers, leading to higher rates of teacher turnover and a greater proportion of inexperienced educators. This disparity in teacher experience and stability can exacerbate existing achievement gaps. Comprehensive approaches to educational equity must therefore address teacher preparation, compensation, and working conditions to ensure that all students have access to effective instruction.
+
+    The intersection of race, ethnicity, and socioeconomic status further complicates the relationship between economic factors and educational outcomes. Historical patterns of discrimination and segregation have created persistent structural inequalities in educational opportunities. Addressing these complex, interconnected disparities requires multifaceted approaches that consider both socioeconomic factors and the specific challenges faced by different racial and ethnic groups.`
+  },
+  
+  creative: {
+    short: `The old lighthouse stood sentinel at the edge of the world, its beam cutting through the dense fog that had settled over the bay. Marina wrapped her woolen scarf tighter as the wind picked up, carrying with it the scent of salt and memories. Twenty years had passed since she'd last stood on these rocks, yet the rhythm of the waves against the shore remained unchanged—a constant in a life that had seen too much transformation.`,
+    
+    medium: `The old lighthouse stood sentinel at the edge of the world, its beam cutting through the dense fog that had settled over the bay. Marina wrapped her woolen scarf tighter as the wind picked up, carrying with it the scent of salt and memories. Twenty years had passed since she'd last stood on these rocks, yet the rhythm of the waves against the shore remained unchanged—a constant in a life that had seen too much transformation.
+
+    She reached into her pocket and felt the smooth edges of the brass key, worn from decades of being turned in the same lock. Her grandfather's final letter had been cryptic, as was his way. "When you're ready to understand, the lighthouse will show you the way," he'd written. Marina had dismissed it as the poetic ramblings of a man who'd spent too many years in isolation, watching the horizon for ships that might never come. But after his funeral, when the family lawyer had handed her the key with a knowing look, something stirred within her—a curiosity that had finally, after all these years, brought her back to Blackrock Point.
+
+    The wooden door creaked in protest as she pushed it open, revealing a spiral staircase coated in dust and forgotten promises. Marina hesitated at the threshold, suddenly aware of the weight of her grandfather's legacy. What secrets had he kept in this tower of stone and light? What truths awaited her at the top of those stairs? Taking a deep breath, she stepped inside, letting the door swing closed behind her. The sound echoed through the empty space like a full stop at the end of one chapter—and the beginning of another.`,
+    
+    long: `The old lighthouse stood sentinel at the edge of the world, its beam cutting through the dense fog that had settled over the bay. Marina wrapped her woolen scarf tighter as the wind picked up, carrying with it the scent of salt and memories. Twenty years had passed since she'd last stood on these rocks, yet the rhythm of the waves against the shore remained unchanged—a constant in a life that had seen too much transformation.
+
+    She reached into her pocket and felt the smooth edges of the brass key, worn from decades of being turned in the same lock. Her grandfather's final letter had been cryptic, as was his way. "When you're ready to understand, the lighthouse will show you the way," he'd written. Marina had dismissed it as the poetic ramblings of a man who'd spent too many years in isolation, watching the horizon for ships that might never come. But after his funeral, when the family lawyer had handed her the key with a knowing look, something stirred within her—a curiosity that had finally, after all these years, brought her back to Blackrock Point.
+
+    The wooden door creaked in protest as she pushed it open, revealing a spiral staircase coated in dust and forgotten promises. Marina hesitated at the threshold, suddenly aware of the weight of her grandfather's legacy. What secrets had he kept in this tower of stone and light? What truths awaited her at the top of those stairs? Taking a deep breath, she stepped inside, letting the door swing closed behind her. The sound echoed through the empty space like a full stop at the end of one chapter—and the beginning of another.
+
+    Each step groaned beneath her weight as she ascended, running her fingers along the cool stone wall for balance. Cobwebs clung to the corners, and the air grew thicker with the scent of dust and disuse. Halfway up, a small window offered a glimpse of the churning sea below, now barely visible through the encroaching darkness. Night was falling quickly, as it always did in November on this remote stretch of coastline. Marina quickened her pace, guided by some inexplicable urgency.
+
+    The lantern room at the top of the lighthouse was smaller than she remembered from childhood visits. The massive Fresnel lens dominated the circular space, its intricate prisms catching what little daylight remained and scattering it in rainbow fragments across the floor. Marina stood transfixed by the spectacle for a moment before noticing the old desk pushed against the far wall—her grandfather's workspace, where he'd kept his logs and written his poetry during the long, solitary nights.
+
+    The desk drawer was locked, but Marina knew immediately that this was where her key belonged. It slid in perfectly, turning with a satisfying click. Inside lay a leather-bound journal, its pages yellowed with age, and beneath it, a folded map marked with strange symbols and annotations in her grandfather's distinctive handwriting. But what caught her eye was the photograph tucked into the journal's first page—a faded image of her grandfather standing beside a woman Marina had never seen before. They were smiling, arms around each other, the lighthouse visible in the background. Marina turned the photo over and read the inscription: "Elizabeth and me, the day we found it. May 15, 1967."
+
+    Who was Elizabeth? And what had they found? Marina settled into the old chair, opened the journal, and began to read as darkness enveloped the lighthouse completely. Outside, the automated beam—installed years after her grandfather's retirement—began its rhythmic sweep across the bay, illuminating the fog in steady pulses. But Marina barely noticed. She was already lost in a story that would change everything she thought she knew about her family—and herself.`
+  },
+  
+  technical: {
+    short: `React hooks provide a way to use state and other React features without writing a class component. The useState hook is particularly useful for managing local component state. When called, it returns a stateful value and a function to update that value. This pattern simplifies state management compared to the traditional setState method used in class components.`,
+    
+    medium: `React hooks provide a way to use state and other React features without writing a class component. The useState hook is particularly useful for managing local component state. When called, it returns a stateful value and a function to update that value. This pattern simplifies state management compared to the traditional setState method used in class components.
+
+    The useEffect hook serves as a replacement for lifecycle methods like componentDidMount, componentDidUpdate, and componentWillUnmount. It accepts a function that contains imperative, possibly effectful code. By default, effects run after every completed render, but you can optimize performance by skipping effects if certain values haven't changed. This is done by passing an array as an optional second argument to useEffect.
+
+    Custom hooks allow you to extract component logic into reusable functions. A custom hook is a JavaScript function whose name starts with "use" and that may call other hooks. For example, you might create a useFormInput hook to handle form field validation and state management across multiple components. This promotes code reuse and helps separate concerns in your application.`,
+    
+    long: `React hooks provide a way to use state and other React features without writing a class component. The useState hook is particularly useful for managing local component state. When called, it returns a stateful value and a function to update that value. This pattern simplifies state management compared to the traditional setState method used in class components.
+
+    The useEffect hook serves as a replacement for lifecycle methods like componentDidMount, componentDidUpdate, and componentWillUnmount. It accepts a function that contains imperative, possibly effectful code. By default, effects run after every completed render, but you can optimize performance by skipping effects if certain values haven't changed. This is done by passing an array as an optional second argument to useEffect.
+
+    Custom hooks allow you to extract component logic into reusable functions. A custom hook is a JavaScript function whose name starts with "use" and that may call other hooks. For example, you might create a useFormInput hook to handle form field validation and state management across multiple components. This promotes code reuse and helps separate concerns in your application.
+
+    The useContext hook provides a way to pass data through the component tree without having to pass props down manually at every level. It accepts a context object (the value returned from React.createContext) and returns the current context value for that context. The current context value is determined by the value prop of the nearest <MyContext.Provider> above the calling component in the tree.
+
+    For performance optimization, React offers the useMemo and useCallback hooks. useMemo returns a memoized value that only recalculates when one of its dependencies changes, which can prevent expensive calculations on every render. Similarly, useCallback returns a memoized callback that only changes if one of its dependencies changes, which is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders.
+
+    The useReducer hook is an alternative to useState for managing complex state logic. It accepts a reducer function of type (state, action) => newState, similar to how Redux works. This hook is preferable to useState when you have complex state logic that involves multiple sub-values or when the next state depends on the previous one. It also lets you optimize performance for components that trigger deep updates because you can pass dispatch down instead of callbacks.`
+  },
+  
+  article: {
+    short: `The rise of artificial intelligence in content creation has sparked debates about authenticity and originality in digital media. AI tools can now generate articles, essays, and creative works that are increasingly difficult to distinguish from human-written content. This technological advancement raises important questions about the future of writing professions and the value we place on human creativity.`,
+    
+    medium: `The rise of artificial intelligence in content creation has sparked debates about authenticity and originality in digital media. AI tools can now generate articles, essays, and creative works that are increasingly difficult to distinguish from human-written content. This technological advancement raises important questions about the future of writing professions and the value we place on human creativity.
+
+    Educational institutions have been particularly affected by these developments. Many universities report an increase in AI-generated assignments, prompting educators to reconsider assessment methods and plagiarism policies. Some schools have implemented specialized detection software, while others are shifting toward in-class assessments or project-based learning that emphasizes process over final product. The challenge lies in balancing technological innovation with academic integrity and the development of genuine writing skills.
+
+    Content publishers face similar dilemmas as they navigate this new landscape. Some media outlets have established explicit policies regarding AI-generated content, requiring disclosure when automation tools are used in the creation process. Others have doubled down on human-created content as a differentiating factor in their brand identity. The economic implications are significant, as AI can produce content at a fraction of the cost of human writers, potentially disrupting traditional publishing models.`,
+    
+    long: `The rise of artificial intelligence in content creation has sparked debates about authenticity and originality in digital media. AI tools can now generate articles, essays, and creative works that are increasingly difficult to distinguish from human-written content. This technological advancement raises important questions about the future of writing professions and the value we place on human creativity.
+
+    Educational institutions have been particularly affected by these developments. Many universities report an increase in AI-generated assignments, prompting educators to reconsider assessment methods and plagiarism policies. Some schools have implemented specialized detection software, while others are shifting toward in-class assessments or project-based learning that emphasizes process over final product. The challenge lies in balancing technological innovation with academic integrity and the development of genuine writing skills.
+
+    Content publishers face similar dilemmas as they navigate this new landscape. Some media outlets have established explicit policies regarding AI-generated content, requiring disclosure when automation tools are used in the creation process. Others have doubled down on human-created content as a differentiating factor in their brand identity. The economic implications are significant, as AI can produce content at a fraction of the cost of human writers, potentially disrupting traditional publishing models.
+
+    The legal framework surrounding AI-generated content remains underdeveloped. Copyright law traditionally protects works of human authorship, leaving questions about the ownership and protection of AI-created materials. Some jurisdictions have begun to address these issues, but global consensus is lacking. This legal uncertainty affects content creators, publishers, and technology developers alike, as they attempt to establish rights and responsibilities in this evolving domain.
+
+    Despite concerns, AI tools also present opportunities for enhancing human creativity rather than replacing it. Many writers and content creators use AI as a collaborative tool—generating ideas, overcoming writer's block, or handling routine aspects of content production. This human-AI collaboration model suggests a future where technology augments creative processes rather than rendering them obsolete. The most successful implementations may be those that leverage AI capabilities while maintaining the human elements that readers ultimately connect with.
+
+    The ability to detect AI-generated content has become increasingly important in this environment. Various detection methods have emerged, analyzing patterns in text that might indicate non-human authorship. However, as generation algorithms improve, detection becomes more challenging, creating a technological arms race between creation and identification tools. This dynamic highlights the need for multifaceted approaches to addressing the challenges posed by AI in content creation, including technological, educational, and policy-based solutions.`
+  }
+};
+
+export async function GET(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { text, mode, intensity, settings } = body;
+    // Get query parameters
+    const { searchParams } = new URL(request.url);
+    const type = searchParams.get('type') || 'article';
+    const length = searchParams.get('length') || 'medium';
     
-    // Validate input
-    if (!text || typeof text !== 'string') {
-      return NextResponse.json(
-        { success: false, error: 'Text is required', code: 'INVALID_PARAMETERS' },
-        { status: 400 }
-      );
-    }
+    // Validate parameters
+    const validTypes = ['academic', 'creative', 'technical', 'article'];
+    const validLengths = ['short', 'medium', 'long'];
     
-    if (text.length > 5000) {
-      return NextResponse.json(
-        { success: false, error: 'Text exceeds maximum length of 5000 characters', code: 'TEXT_TOO_LONG' },
-        { status: 413 }
-      );
-    }
+    const validatedType = validTypes.includes(type as string) ? type : 'article';
+    const validatedLength = validLengths.includes(length as string) ? length : 'medium';
     
-    // Process the text through humanization algorithms
-    const result = await humanizeText(text, mode, intensity, settings);
+    // Get the sample text
+    const sampleText = sampleTexts[validatedType as keyof typeof sampleTexts][validatedLength as keyof typeof sampleTexts.academic];
+    
+    // Count words for metadata
+    const wordCount = sampleText.split(/\s+/).length;
     
     return NextResponse.json({
       success: true,
-      humanizedText: result.humanizedText,
-      stats: result.stats
+      sampleText,
+      metadata: {
+        type: validatedType,
+        length: validatedLength,
+        wordCount
+      }
     });
     
   } catch (error) {
-    console.error('Error processing humanization request:', error);
-    return NextResponse.json(
-      { success: false, error: 'Internal server error', code: 'INTERNAL_ERROR' },
-      { status: 500 }
-    );
+    console.error('Error in samples API:', error);
+    return NextResponse.json({ 
+      success: false, 
+      error: "Failed to retrieve sample text" 
+    }, { status: 500 });
   }
-}
-
-async function humanizeText(
-  text: string, 
-  mode: string = 'standard', 
-  intensity: number = 0.7,
-  settings?: {
-    perplexity?: number;
-    burstiness?: number;
-    vocabularyDiversity?: number;
-    sentenceVariation?: number;
-    addHumanElements?: boolean;
-    preserveFormatting?: boolean;
-  }
-) {
-  // Default settings
-  const finalSettings = {
-    perplexity: settings?.perplexity ?? 0.6,
-    burstiness: settings?.burstiness ?? 0.8,
-    vocabularyDiversity: settings?.vocabularyDiversity ?? 0.7,
-    sentenceVariation: settings?.sentenceVariation ?? 0.6,
-    addHumanElements: settings?.addHumanElements ?? true,
-    preserveFormatting: settings?.preserveFormatting ?? true
-  };
-  
-  // Start timing for performance measurement
-  const startTime = Date.now();
-  
-  // Process the text through various humanization algorithms
-  let processedText = text;
-  let sentencesRestructured = 0;
-  let vocabularyEnhanced = 0;
-  let humanElementsAdded = 0;
-  
-  // 1. Split text into sentences
-  const sentences = splitIntoSentences(processedText);
-  
-  // 2. Apply sentence structure variation based on burstiness setting
-  const restructuredSentences = applySentenceVariation(
-    sentences, 
-    finalSettings.burstiness, 
-    finalSettings.sentenceVariation,
-    mode
-  );
-  sentencesRestructured = countDifferences(sentences, restructuredSentences);
-  
-  // 3. Apply vocabulary diversification
-  const enhancedVocabSentences = applyVocabularyDiversification(
-    restructuredSentences,
-    finalSettings.vocabularyDiversity,
-    mode
-  );
-  vocabularyEnhanced = countWordDifferences(
-    restructuredSentences.join(' '), 
-    enhancedVocabSentences.join(' ')
-  );
-  
-  // 4. Add human elements if enabled
-  let finalSentences = enhancedVocabSentences;
-  if (finalSettings.addHumanElements) {
-    finalSentences = addHumanElements(
-      enhancedVocabSentences,
-      finalSettings.perplexity,
-      mode
-    );
-    humanElementsAdded = countAddedHumanElements(
-      enhancedVocabSentences, 
-      finalSentences
-    );
-  }
-  
-  // 5. Combine sentences back into text
-  processedText = finalSentences.join(' ');
-  
-  // Calculate processing time
-  const processingTime = ((Date.now() - startTime) / 1000).toFixed(1);
-  
-  // Calculate detection scores based on the changes made
-  const perplexityScore = calculatePerplexityScore(processedText);
-  const burstinessScore = calculateBurstinessScore(finalSentences);
-  const overallHumanScore = calculateOverallHumanScore(
-    perplexityScore, 
-    burstinessScore,
-    vocabularyEnhanced / text.split(' ').length
-  );
-  
-  return {
-    humanizedText: processedText,
-    stats: {
-      originalLength: text.length,
-      humanizedLength: processedText.length,
-      processingTime: `${processingTime}s`,
-      detectionScores: {
-        perplexity: perplexityScore,
-        burstiness: burstinessScore,
-        overallHumanScore: overallHumanScore
-      },
-      changes: {
-        sentencesRestructured,
-        vocabularyEnhanced,
-        humanElementsAdded
-      }
-    }
-  };
-}
-
-// Helper functions for text processing
-
-function splitIntoSentences(text: string): string[] {
-  // Simple sentence splitting - in a real implementation, this would be more sophisticated
-  return text.split(/(?<=[.!?])\s+/);
-}
-
-function applySentenceVariation(
-  sentences: string[], 
-  burstiness: number,
-  sentenceVariation: number,
-  mode: string
-): string[] {
-  // Apply sentence structure variation based on burstiness setting
-  return sentences.map(sentence => {
-    // Skip very short sentences
-    if (sentence.split(' ').length < 4) return sentence;
-    
-    // Determine if we should modify this sentence based on settings
-    const shouldModify = Math.random() < (burstiness * sentenceVariation);
-    if (!shouldModify) return sentence;
-    
-    // Different modification strategies based on mode
-    switch (mode) {
-      case 'academic':
-        return makeMoreFormal(sentence);
-      case 'creative':
-        return makeMoreCreative(sentence);
-      case 'casual':
-        return makeMoreCasual(sentence);
-      case 'standard':
-      default:
-        // Randomly choose a transformation for standard mode
-        const transformations = [
-          makeMoreFormal,
-          makeMoreCreative,
-          makeMoreCasual,
-          reorderSentenceParts
-        ];
-        const transform = transformations[Math.floor(Math.random() * transformations.length)];
-        return transform(sentence);
-    }
-  });
-}
-
-function makeMoreFormal(sentence: string): string {
-  // Example transformation for formal style
-  return sentence
-    .replace(/(\w+)'re/g, '$1 are')
-    .replace(/(\w+)'s/g, '$1 is')
-    .replace(/(\w+)n't/g, '$1 not')
-    .replace(/I think|I believe/g, 'It is evident that')
-    .replace(/lots of|a lot of/g, 'numerous')
-    .replace(/big/g, 'substantial')
-    .replace(/good/g, 'beneficial')
-    .replace(/bad/g, 'detrimental');
-}
-
-function makeMoreCreative(sentence: string): string {
-  // Add more descriptive elements
-  const words = sentence.split(' ');
-  
-  // Add an adjective before a random noun
-  for (let i = 0; i < words.length; i++) {
-    // Simple heuristic: words longer than 4 chars that don't end with 'ly' might be nouns
-    if (words[i].length > 4 && !words[i].endsWith('ly') && Math.random() < 0.3) {
-      const adjectives = [
-        'vibrant', 'subtle', 'profound', 'intricate', 'mesmerizing',
-        'delicate', 'striking', 'enigmatic', 'captivating', 'ethereal'
-      ];
-      const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-      words.splice(i, 0, adjective);
-      break;
-    }
-  }
-  
-  return words.join(' ');
-}
-
-function makeMoreCasual(sentence: string): string {
-  // Example transformation for casual style
-  return sentence
-    .replace(/therefore|thus|consequently/g, 'so')
-    .replace(/however|nevertheless/g, 'but')
-    .replace(/additionally|furthermore/g, 'also')
-    .replace(/utilize/g, 'use')
-    .replace(/obtain/g, 'get')
-    .replace(/purchase/g, 'buy')
-    .replace(/regarding/g, 'about');
-}
-
-function reorderSentenceParts(sentence: string): string {
-  // Simple sentence reordering for variety
-  const words = sentence.split(' ');
-  
-  // Only reorder if sentence is long enough
-  if (words.length < 6) return sentence;
-  
-  // Find a comma or natural break point
-  const commaIndex = sentence.indexOf(',');
-  
-  if (commaIndex > 0) {
-    // If there's a comma, we can swap the parts
-    const firstPart = sentence.substring(0, commaIndex);
-    const secondPart = sentence.substring(commaIndex + 1).trim();
-    
-    // Sometimes move the second part to the beginning
-    if (secondPart.length > 10 && !secondPart.startsWith('which') && !secondPart.startsWith('that')) {
-      return `${secondPart}, ${firstPart}.`;
-    }
-  }
-  
-  // If no good reordering found, return original
-  return sentence;
-}
-
-function applyVocabularyDiversification(
-  sentences: string[],
-  vocabularyDiversity: number,
-  mode: string
-): string[] {
-  // Replace common words with more diverse alternatives
-  return sentences.map(sentence => {
-    // Skip very short sentences
-    if (sentence.split(' ').length < 4) return sentence;
-    
-    // Common word replacements
-    const commonReplacements: Record<string, string[]> = {
-      'very': ['extremely', 'incredibly', 'remarkably', 'exceptionally'],
-      'good': ['excellent', 'outstanding', 'superb', 'wonderful'],
-      'bad': ['poor', 'terrible', 'awful', 'subpar'],
-      'big': ['large', 'substantial', 'enormous', 'massive'],
-      'small': ['tiny', 'minute', 'compact', 'diminutive'],
-      'important': ['crucial', 'essential', 'vital', 'significant'],
-      'interesting': ['fascinating', 'intriguing', 'compelling', 'captivating'],
-      'said': ['stated', 'mentioned', 'noted', 'remarked'],
-      'show': ['demonstrate', 'illustrate', 'exhibit', 'display'],
-      'think': ['believe', 'consider', 'contemplate', 'ponder']
-    };
-    
-    // Mode-specific replacements
-    const modeReplacements: Record<string, Record<string, string[]>> = {
-      'academic': {
-        'use': ['utilize', 'employ', 'implement', 'apply'],
-        'make': ['construct', 'formulate', 'develop', 'establish'],
-        'look at': ['examine', 'analyze', 'investigate', 'assess']
-      },
-      'creative': {
-        'walk': ['stroll', 'saunter', 'amble', 'wander'],
-        'see': ['glimpse', 'observe', 'witness', 'behold'],
-        'hear': ['perceive', 'detect', 'discern', 'catch']
-      },
-      'casual': {
-        'difficult': ['tough', 'hard', 'tricky', 'challenging'],
-        'happy': ['glad', 'stoked', 'thrilled', 'pumped'],
-        'sad': ['down', 'blue', 'bummed', 'upset']
-      }
-    };
-    
-    // Combine common replacements with mode-specific ones
-    const replacements = {
-      ...commonReplacements,
-      ...(modeReplacements[mode] || {})
-    };
-    
-    // Apply replacements based on vocabularyDiversity setting
-    let modifiedSentence = sentence;
-    Object.entries(replacements).forEach(([word, alternatives]) => {
-      // Only replace if the word exists and based on diversity setting
-      const regex = new RegExp(`\\b${word}\\b`, 'gi');
-      if (regex.test(modifiedSentence) && Math.random() < vocabularyDiversity) {
-        const alternative = alternatives[Math.floor(Math.random() * alternatives.length)];
-        modifiedSentence = modifiedSentence.replace(regex, alternative);
-      }
-    });
-    
-    return modifiedSentence;
-  });
-}
-
-function addHumanElements(
-  sentences: string[],
-  perplexity: number,
-  mode: string
-): string[] {
-  // Add human-like elements based on perplexity setting
-  return sentences.map((sentence, index) => {
-    // Skip very short sentences or first/last sentences
-    if (sentence.split(' ').length < 5 || index === 0 || index === sentences.length - 1) {
-      return sentence;
-    }
-    
-    // Determine if we should add human elements based on perplexity
-    const shouldAddElement = Math.random() < perplexity * 0.5;
-    if (!shouldAddElement) return sentence;
-    
-    // Different human elements based on mode
-    const humanElements: Record<string, string[]> = {
-      'standard': [
-        'I think', 'In my experience', 'Interestingly', 
-        'Surprisingly', 'To be honest', 'Frankly speaking'
-      ],
-      'academic': [
-        'It is worth noting that', 'Notably', 'Interestingly', 
-        'Upon reflection', 'One might argue that', 'Arguably'
-      ],
-      'creative': [
-        'Imagine that', 'Picture this', 'Curiously enough', 
-        'Strangely', 'Like a dream', 'As if by magic'
-      ],
-      'casual': [
-        'Honestly', 'Seriously though', 'Get this', 
-        'No joke', 'Believe it or not', 'Crazy thing is'
-      ]
-    };
-    
-    const elements = humanElements[mode] || humanElements['standard'];
-    const element = elements[Math.floor(Math.random() * elements.length)];
-    
-    // Add the human element at the beginning of the sentence
-    return `${element}, ${sentence.charAt(0).toLowerCase()}${sentence.slice(1)}`;
-  });
-}
-
-function countDifferences(original: string[], modified: string[]): number {
-  let count = 0;
-  for (let i = 0; i < Math.min(original.length, modified.length); i++) {
-    if (original[i] !== modified[i]) {
-      count++;
-    }
-  }
-  return count;
-}
-
-function countWordDifferences(original: string, modified: string): number {
-  const originalWords = original.split(' ');
-  const modifiedWords = modified.split(' ');
-  
-  // Count words that are in modified but not in original
-  const uniqueWords = new Set(modifiedWords.filter(word => !originalWords.includes(word)));
-  return uniqueWords.size;
-}
-
-function countAddedHumanElements(original: string[], modified: string[]): number {
-  let count = 0;
-  const humanElementPrefixes = [
-    'I think', 'In my experience', 'Interestingly', 'Surprisingly', 
-    'To be honest', 'Frankly speaking', 'It is worth noting that', 
-    'Notably', 'Upon reflection', 'One might argue that', 'Arguably',
-    'Imagine that', 'Picture this', 'Curiously enough', 'Strangely',
-    'Honestly', 'Seriously though', 'Get this', 'No joke', 'Believe it or not'
-  ];
-  
-  for (const sentence of modified) {
-    for (const prefix of humanElementPrefixes) {
-      if (sentence.includes(`${prefix},`)) {
-        count++;
-        break;
-      }
-    }
-  }
-  
-  return count;
-}
-
-function calculatePerplexityScore(text: string): number {
-  // In a real implementation, this would use a more sophisticated algorithm
-  // For now, we'll use a simple heuristic based on word variety
-  const words = text.split(' ');
-  const uniqueWords = new Set(words);
-  
-  // Calculate ratio of unique words to total words
-  const uniqueRatio = uniqueWords.size / words.length;
-  
-  // Scale to 0-1 range
-  return Math.min(Math.max(uniqueRatio * 1.5, 0), 1);
-}
-
-function calculateBurstinessScore(sentences: string[]): number {
-  // Calculate variance in sentence length
-  const lengths = sentences.map(s => s.split(' ').length);
-  const average = lengths.reduce((sum, len) => sum + len, 0) / lengths.length;
-  
-  // Calculate variance
-  const variance = lengths.reduce((sum, len) => sum + Math.pow(len - average, 2), 0) / lengths.length;
-  
-  // Normalize to 0-1 range (higher variance = higher burstiness)
-  return Math.min(Math.max(variance / 20, 0), 1);
-}
-
-function calculateOverallHumanScore(
-  perplexity: number,
-  burstiness: number,
-  vocabularyDiversity: number
-): number {
-  // Weighted average of the different scores
-  const weights = {
-    perplexity: 0.4,
-    burstiness: 0.3,
-    vocabularyDiversity: 0.3
-  };
-  
-  const score = (
-    perplexity * weights.perplexity +
-    burstiness * weights.burstiness +
-    vocabularyDiversity * weights.vocabularyDiversity
-  );
-  
-  // Scale to 0-100 range
-  return Math.round(score * 100);
 }
