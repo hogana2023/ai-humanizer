@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from 'react';
-import Header from '../components/layout/Header';
-import Footer from '../components/layout/Footer';
-import TextInput from '../components/features/TextInput';
-import TextOutput from '../components/features/TextOutput';
-import SettingsPanel from '../components/features/SettingsPanel';
+import Header from './src/components/layout/Header';
+import Footer from './src/components/layout/Footer';
+import TextInput from './src/components/features/TextInput';
+import TextOutput from './src/components/features/TextOutput';
+import SettingsPanel from './src/components/features/SettingsPanel';
 
 // Mock humanizer hook functionality for the simplified version
 function useHumanizer() {
