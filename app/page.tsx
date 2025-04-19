@@ -1,12 +1,12 @@
 "use client";
 
+import { useState } from 'react';
 import Header from '../src/components/layout/Header';
 import Footer from '../src/components/layout/Footer';
 import TextInput from '../src/components/features/TextInput';
 import TextOutput from '../src/components/features/TextOutput';
 import SettingsPanel from '../src/components/features/SettingsPanel';
 import { useHumanizer } from '../src/hooks/useHumanizer';
-
 
 export default function Home() {
   // State for input text
