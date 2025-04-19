@@ -1,3 +1,5 @@
+// netlify.toml configuration file for Next.js app with src directory
+
 [build]
   command = "npm run build"
   publish = ".next"
@@ -7,3 +9,4 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
