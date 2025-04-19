@@ -2,9 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    appDir: true
-  }
+  // No experimental appDir setting needed for app/src structure
 };
 
 module.exports = nextConfig;
