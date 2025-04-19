@@ -1,12 +1,82 @@
 "use client";
 
 import { useState } from 'react';
-import Header from '../src/components/layout/Header';
-import Footer from '../src/components/layout/Footer';
-import TextInput from '../src/components/features/TextInput';
-import TextOutput from '../src/components/features/TextOutput';
-import SettingsPanel from '../src/components/features/SettingsPanel';
-import { useHumanizer } from '../src/hooks/useHumanizer';
+import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
+import TextInput from '../components/features/TextInput';
+import TextOutput from '../components/features/TextOutput';
+import SettingsPanel from '../components/features/SettingsPanel';
+
+// Mock humanizer hook functionality for the simplified version
+function useHumanizer() {
+  const [humanizedText, setHumanizedText] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [detectionScore, setDetectionScore] = useState<number | undefined>(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
+
+  const processText = (
+    text: string, 
+    mode: 'standard' | 'academic' | 'creative' | 'casual', 
+    intensity: number,
+    advancedSettings: any
+  ) => {
+    setIsProcessing(true);
+    setError(undefined);
+    
+    // Simulate processing delay
+    setTimeout(() => {
+      try {
+        // Simple humanization logic for demonstration
+        let result = text;
+        
+        // Add some variation based on mode and intensity
+        if (intensity > 0.5) {
+          // Replace some common phrases
+          result = result.replace(/in conclusion/gi, 'to sum up');
+          result = result.replace(/however/gi, 'nevertheless');
+          result = result.replace(/therefore/gi, 'consequently');
+          
+          // Add some filler words if advanced setting is enabled
+          if (advancedSettings.addHumanElements) {
+            result = result.replace(/\. /g, '. Well, ');
+            result = result.replace(/\? /g, '? Hmm, ');
+          }
+        }
+        
+        // Calculate a mock detection score
+        const score = Math.floor(Math.random() * 30) + 70; // Random score between 70-99
+        
+        setHumanizedText(result);
+        setDetectionScore(score);
+        setIsProcessing(false);
+      } catch (err) {
+        setError('An error occurred during processing. Please try again.');
+        setIsProcessing(false);
+      }
+    }, 2000);
+  };
+
+  const loadSample = async (type: string) => {
+    // Sample texts for different types
+    const samples: Record<string, string> = {
+      academic: "The analysis of climate change impacts requires interdisciplinary approaches. Recent studies have demonstrated that global temperature increases of 1.5°C above pre-industrial levels will have significant consequences for ecosystems worldwide. Therefore, it is imperative that policymakers implement effective mitigation strategies.",
+      creative: "The old house stood silently against the twilight sky, its windows like vacant eyes staring into the distance. Sarah hesitated at the gate, memories flooding back from her childhood. The rusted hinges creaked as she pushed forward, stepping into a past she had tried so hard to forget.",
+      technical: "The implementation of the algorithm requires O(n log n) time complexity. By utilizing a balanced binary search tree, we can optimize the lookup operations. The system architecture consists of three primary components: the data processing module, the analytics engine, and the user interface layer.",
+      casual: "Hey! So I was thinking about that movie we saw last weekend. It was pretty good, right? The special effects were amazing, but the plot had some serious holes. Anyway, I'm thinking of checking out that new restaurant downtown. Wanna join?"
+    };
+    
+    return samples[type] || "Sample text not found for the selected type.";
+  };
+
+  return {
+    humanizedText,
+    isProcessing,
+    detectionScore,
+    error,
+    processText,
+    loadSample
+  };
+}
 
 export default function Home() {
   // State for input text
