@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
     
     // Analyze sentence structure and vocabulary
     const sentences = tokenizer.tokenize(data.text);
-    const words = wordTokenizer.tokenize(text.toLowerCase()) || [];
+    const words = wordTokenizer.tokenize(Text.toLowerCase()) || [];
     const uniqueWords = new Set(words.map(w => w.toLowerCase()));
     
     const sentenceStructure = burstiness < 0.5 ? 
