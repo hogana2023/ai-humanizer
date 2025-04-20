@@ -32,7 +32,7 @@ function calculatePerplexity(text: string): number {
   const normalizedStdDev = Math.min(stdDev / 50, 1);
   
   // Calculate word diversity
-  const words = wordTokenizer.tokenize(data.text.toLowerCase()) || [];
+  const words = wordTokenizer.tokenize(text.toLowerCase()) || [];
   const uniqueWords = new Set(words);
   const uniqueRatio =
   words.length > 0
@@ -64,7 +64,7 @@ function calculateBurstiness(text: string): number {
   
   // Check for sentence beginnings diversity
   const beginnings = sentences.map(s => {
-    const words = wordTokenizer.tokenize(data.text.toLowerCase()) || [];
+    const words = wordTokenizer.tokenize(sentence.toLowerCase()) || [];
     return words && words.length > 0 ? words[0].toLowerCase() : '';
   }).filter(w => w.length > 0);
   
@@ -167,7 +167,7 @@ export async function POST(request: NextRequest) {
       "Low variation detected" : 
       "Natural variation present";
       
-    const vocabularyDiversity = (words.length > 0 && uniqueWords.size / words.length < 0.6) 
+    const vocabularyDiversity = (words.length > 0 && uniqueWords.size / words.length < 0.6) ?
       "Limited word choice variety" : 
       "Good vocabulary diversity";
     
