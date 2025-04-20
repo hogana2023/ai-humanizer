@@ -32,7 +32,7 @@ function calculatePerplexity(text: string): number {
   const normalizedStdDev = Math.min(stdDev / 50, 1);
   
   // Calculate word diversity
-  const words = wordTokenizer.tokenize(text.toLowerCase());
+  const wordsArray = wordTokenizer.tokenize(text.toLowerCase()) || [];
   const uniqueWords = new Set(words);
   const uniqueRatio = uniqueWords.size / words.length;
   
@@ -61,7 +61,7 @@ function calculateBurstiness(text: string): number {
   
   // Check for sentence beginnings diversity
   const beginnings = sentences.map(s => {
-    const words = wordTokenizer.tokenize(s);
+    const wordsArray = wordTokenizer.tokenize(text.toLowerCase()) || [];
     return words && words.length > 0 ? words[0].toLowerCase() : '';
   }).filter(w => w.length > 0);
   
@@ -155,7 +155,7 @@ export async function POST(request: NextRequest) {
     
     // Analyze sentence structure and vocabulary
     const sentences = tokenizer.tokenize(data.text);
-    const words = wordTokenizer.tokenize(data.text);
+    const wordsArray = wordTokenizer.tokenize(text.toLowerCase()) || [];
     const uniqueWords = new Set(words.map(w => w.toLowerCase()));
     
     const sentenceStructure = burstiness < 0.5 ? 
