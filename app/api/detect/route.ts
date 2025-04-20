@@ -34,7 +34,10 @@ function calculatePerplexity(text: string): number {
   // Calculate word diversity
   const wordsArray = wordTokenizer.tokenize(text.toLowerCase()) || [];
   const uniqueWords = new Set(words);
-  const uniqueRatio = uniqueWords.size / words.length;
+  const uniqueRatio =
+  wordsArray.length > 0
+    ? uniqueWords.size / wordsArray.length
+    : 0;
   
   // Combine metrics (weighted)
   return (normalizedStdDev * 0.6) + (uniqueRatio * 0.4);
