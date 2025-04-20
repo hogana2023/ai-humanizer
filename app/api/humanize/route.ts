@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Step 1: Rewrite the text with an LLM to sound human
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const openai = new OpenAI({ apiKey: process.env.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 });
     const completion = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: [
