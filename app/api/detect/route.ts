@@ -64,7 +64,7 @@ function calculateBurstiness(text: string): number {
   
   // Check for sentence beginnings diversity
   const beginnings = sentences.map(s => {
-    const words = wordTokenizer.tokenize(sentence.toLowerCase()) || [];
+    const words = wordTokenizer.tokenize(s.toLowerCase()) || [];
     return words && words.length > 0 ? words[0].toLowerCase() : '';
   }).filter(w => w.length > 0);
   
