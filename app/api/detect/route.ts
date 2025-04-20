@@ -157,15 +157,17 @@ export async function POST(request: NextRequest) {
       Math.min(0.95, overallHumanScore);
     
     // Analyze sentence structure and vocabulary
+    //const sentences = tokenizer.tokenize(data.text);
+    //const words = wordTokenizer.tokenize(Text.toLowerCase()) || [];
     const sentences = tokenizer.tokenize(data.text);
-    const words = wordTokenizer.tokenize(Text.toLowerCase()) || [];
+    const words = wordTokenizer.tokenize(data.text.toLowerCase()) || [];
     const uniqueWords = new Set(words.map(w => w.toLowerCase()));
     
     const sentenceStructure = burstiness < 0.5 ? 
       "Low variation detected" : 
       "Natural variation present";
       
-    const vocabularyDiversity = (uniqueWords.size / words.length) < 0.6 ? 
+    const vocabularyDiversity = (words.length > 0 && uniqueWords.size / words.length < 0.6) 
       "Limited word choice variety" : 
       "Good vocabulary diversity";
     
