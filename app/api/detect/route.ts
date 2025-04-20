@@ -32,7 +32,7 @@ function calculatePerplexity(text: string): number {
   const normalizedStdDev = Math.min(stdDev / 50, 1);
   
   // Calculate word diversity
-  const words = wordTokenizer.tokenize(text.toLowerCase()) || [];
+  const words = wordTokenizer.tokenize(data.text.toLowerCase()) || [];
   const uniqueWords = new Set(words);
   const uniqueRatio =
   words.length > 0
@@ -64,7 +64,7 @@ function calculateBurstiness(text: string): number {
   
   // Check for sentence beginnings diversity
   const beginnings = sentences.map(s => {
-    const words = wordTokenizer.tokenize(text.toLowerCase()) || [];
+    const words = wordTokenizer.tokenize(data.text.toLowerCase()) || [];
     return words && words.length > 0 ? words[0].toLowerCase() : '';
   }).filter(w => w.length > 0);
   
